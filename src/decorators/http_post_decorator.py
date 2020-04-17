@@ -1,13 +1,8 @@
-import inspect
-from services.controller_handler import ControllerHandler
-from functools import wraps
+from models.endpoint_info import EndpointInfo
 
-def http_post(path, body):
-  def decorator(func):
-    ControllerHandler.get_instance().registerEndpoint(func, {
-      'method': 'POST',
-      'path': path,
-      'body_arg': body
-    })
-    return func
+def http_post(route, body_argument):
+  def decorator(controller_method):
+    controller_method.endpoint_info = EndpointInfo('POST', route, controller_method)
+    controller_method.endpoint_info.body_argument = body_argument
+    return controller_method
   return decorator

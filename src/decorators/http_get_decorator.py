@@ -1,12 +1,7 @@
-import inspect
-from services.controller_handler import ControllerHandler
-from functools import wraps
+from models.endpoint_info import EndpointInfo
 
-def http_get(path):
-  def decorator(func):
-    ControllerHandler.get_instance().registerEndpoint(func, {
-      'method': 'GET',
-      'path': path
-    })
-    return func
+def http_get(route):
+  def decorator(controller_method):
+    controller_method.endpoint_info = EndpointInfo('GET', route, controller_method)
+    return controller_method
   return decorator

@@ -1,13 +1,16 @@
 service: strawberry-py-test
 provider:
   name: aws
-  runtime: python3.6
+  runtime: python3.7
 plugins:
 - serverless-offline-python
+- serverless-python-requirements
 - serverless-offline
 custom:
   serverless-offline:
     resourceRoutes: true
+  pythonRequirements:
+    dockerizePip: non-linux
 functions:
   app:
     handler: src.main.handler

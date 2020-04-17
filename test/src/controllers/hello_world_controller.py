@@ -1,6 +1,6 @@
 from strawberry_py import controller, http_get, http_post, ControllerBase
 
-@controller('Hello-World')
+@controller()
 class HelloWorldController(ControllerBase):
 
   def test_method(self):
@@ -11,6 +11,6 @@ class HelloWorldController(ControllerBase):
     self.response.headers['X-API-RES'] = 'HarrrHarrr'
     return 'Hello ' + last_name + ', ' + first_name + '!'
 
-  @http_post('/hello/world/{first_name}', body='contact_info')
+  @http_post('/hello/world/{first_name}', body_argument='contact_info')
   def post_hello_world(self, first_name, contact_info):
     return  'Hello ' + contact_info['last_name'] + ', ' + first_name + '!'

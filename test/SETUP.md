@@ -16,10 +16,15 @@ yq w -i serverless.yml provider.runtime python3.6
 # Add Plugins
 yq w -i serverless.yml plugins[0] 'serverless-offline-python'
 yq w -i serverless.yml plugins[1] 'serverless-offline'
+yq w -i serverless.yml plugins[2] 'serverless-python-requirements'
 
 # Define Api Gateway and Lambda Functions
 yq w -i serverless.yml custom.serverless-offline.resourceRoutes true
 yq w -i serverless.yml functions.app.handler main.handler
 yq w -i serverless.yml functions.app.events[0].http 'ANY /'
 yq w -i serverless.yml functions.app.events[1].http 'ANY {proxy+}'
+
+# Add Packaging of pip requirements
+yq w -i serverless.yml pythonRequirements.dockerizePip true
+
 ```
