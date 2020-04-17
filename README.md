@@ -10,3 +10,18 @@ This casues the package to get bigger and bigger while also increasing the cold 
 - Supports Python 3.7 and higher
 - Supports AWS Lambda
 - Should support other Lambda function providers with small adjustments.
+
+```
+from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse
+
+#region Controllers
+from .controllers.hello_world_controller import HelloWorldController
+#endregion
+
+def handler(event, context):
+  request = AwsLambdaRequest(event, context)
+  controller_handler = ControllerHandler.get_instance()
+  response = controller_handler.handleRequest(request)
+
+  return AwsLambdaResponse.from_response(response).get_lambda_result()
+ ```
