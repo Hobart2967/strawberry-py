@@ -10,6 +10,7 @@ This casues the package to get bigger and bigger while also increasing the cold 
 - Supports Python 3.7 and higher
 - Supports AWS Lambda
 - Should support other Lambda function providers with small adjustments.
+- Comes with an OpenApi Generator for easing documentation of REST APIs ✨
 
 ```
 from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse
