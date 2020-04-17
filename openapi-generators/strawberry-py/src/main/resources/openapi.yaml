@@ -1,0 +1,241 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: vl-tps-platform@trustedshops.de
+    name: Trusted Shops GmbH
+  title: Trusted Shops Web Platform APIs
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- description: API for the Trusted Shops Web Platform Plugins and their registrations
+  name: Plugin-Management
+paths:
+  /plugins/status/{pluginName}/{targetGroup}:
+    patch:
+      operationId: change_plugin_status
+      parameters:
+      - description: Name of the plugin to change the status for
+        explode: false
+        in: path
+        name: pluginName
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: 'Target Platform to change the plugin registration for. Currently
+          can be one of the following: b2c, b2b, employees'
+        explode: false
+        in: path
+        name: targetGroup
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: boolean
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResultInfo'
+          description: Everything went fine!
+        "422":
+          description: Occurs when the specified target group platform does not exist.
+      summary: Enables or disables the plugin for the specified target group's platform
+      tags:
+      - Plugin-Management
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: arn:aws:apigateway:${api_region}:lambda:path/2015-03-31/functions/${features_lambda_arn}/invocations
+        credentials: ${features_lambda_execution_role_arn}
+        httpMethod: POST
+        responses:
+          default:
+            statusCode: "200"
+          BAD.*:
+            statusCode: "400"
+          INT.*:
+            statusCode: "500"
+      x-openapi-router-controller: src.controllers.plugin_management_controller
+  /plugins/update/{targetGroup}:
+    put:
+      operationId: update_plugin
+      parameters:
+      - description: 'Target Platform to register to. Currently can be one of the
+          following: b2c, b2b, employees'
+        explode: false
+        in: path
+        name: targetGroup
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureFile'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResultInfo'
+          description: Everything went fine!
+        "422":
+          description: Occurs when the specified target group platform does not exist.
+      summary: Updates a plugin configuration
+      tags:
+      - Plugin-Management
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: arn:aws:apigateway:${api_region}:lambda:path/2015-03-31/functions/${features_lambda_arn}/invocations
+        credentials: ${features_lambda_execution_role_arn}
+        httpMethod: POST
+        responses:
+          default:
+            statusCode: "200"
+          BAD.*:
+            statusCode: "400"
+          INT.*:
+            statusCode: "500"
+      x-openapi-router-controller: src.controllers.plugin_management_controller
+  /plugins/uploadlink:
+    get:
+      operationId: get_pre_signed_url
+      parameters:
+      - description: The name of the file that will be uploaded.
+        explode: true
+        in: query
+        name: fileName
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResult'
+          description: The unique presigned url for uploading a feature bundle.
+      summary: Returns a pre signed url for uploading the feature bundle.
+      tags:
+      - Plugin-Management
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: arn:aws:apigateway:${api_region}:lambda:path/2015-03-31/functions/${features_lambda_arn}/invocations
+        credentials: ${features_lambda_execution_role_arn}
+        httpMethod: POST
+        responses:
+          default:
+            statusCode: "200"
+          BAD.*:
+            statusCode: "400"
+          INT.*:
+            statusCode: "500"
+      x-openapi-router-controller: src.controllers.plugin_management_controller
+  /plugins/{targetGroup}:
+    get:
+      operationId: list_platform_features
+      parameters:
+      - description: 'Target Platform to register to. Currently can be one of the
+          following: b2c, b2b, employees'
+        explode: false
+        in: path
+        name: targetGroup
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PluginRegistrationInfoList'
+                type: array
+          description: List of plugins activated for the specified target user group's
+            platform
+        "422":
+          description: Occurs when the specified target group platform does not exist.
+      tags:
+      - Plugin-Management
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: arn:aws:apigateway:${api_region}:lambda:path/2015-03-31/functions/${features_lambda_arn}/invocations
+        credentials: ${features_lambda_execution_role_arn}
+        httpMethod: POST
+        responses:
+          default:
+            statusCode: "200"
+          BAD.*:
+            statusCode: "400"
+          INT.*:
+            statusCode: "500"
+      x-openapi-router-controller: src.controllers.plugin_management_controller
+components:
+  schemas:
+    UploadUrlResult:
+      description: Contains the upload URL that is returned by the endpoint
+      example:
+        url: url
+      properties:
+        url:
+          type: string
+      type: object
+    FeatureFile:
+      description: This object contains the name of the file that was uploaded before.
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+      type: object
+    OperationResultInfo:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+    PluginRegistrationInfoList:
+      items:
+        $ref: '#/components/schemas/PluginRegistrationInfo'
+      type: array
+    PluginRegistrationInfo:
+      properties:
+        name:
+          type: string
+        active:
+          type: boolean
+        basePath:
+          type: string
+        resources:
+          items:
+            $ref: '#/components/schemas/PluginResourceInfo'
+          type: array
+        dependencies:
+          items:
+            type: string
+          type: array
+        autostart:
+          type: boolean
+      type: object
+    PluginResourceInfo:
+      properties:
+        key:
+          type: string
+        type:
+          type: string
+        options:
+          type: object
+      type: object

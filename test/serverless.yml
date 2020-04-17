@@ -1,0 +1,16 @@
+service: strawberry-py-test
+provider:
+  name: aws
+  runtime: python3.6
+plugins:
+- serverless-offline-python
+- serverless-offline
+custom:
+  serverless-offline:
+    resourceRoutes: true
+functions:
+  app:
+    handler: src.main.handler
+    events:
+    - http: ANY /
+    - http: ANY {proxy+}

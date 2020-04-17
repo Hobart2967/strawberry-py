@@ -1,0 +1,10 @@
+{{#operations}}
+class {{classname}}:
+
+{{#operation}}
+  @http_get()
+  def {{operationId}}(self{{#allParams}}, {{paramName}}{{/allParams}}):
+    return
+
+{{/operation}}
+{{/operations}}
