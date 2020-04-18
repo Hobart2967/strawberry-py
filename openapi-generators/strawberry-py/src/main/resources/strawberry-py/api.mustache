@@ -1,8 +1,11 @@
+from strawberry_py import ApiController, http_get, http_put, http_post, http_patch
+
 {{#operations}}
-class {{classname}}:
+@controller()
+class {{classname}}(ApiController):
 
 {{#operation}}
-  @http_get()
+  @http_{{#lowercase}}{{httpMethod}}{{/lowercase}}('{{{basePathWithoutHost}}}{{{path}}}')
   def {{operationId}}(self{{#allParams}}, {{paramName}}{{/allParams}}):
     return
 

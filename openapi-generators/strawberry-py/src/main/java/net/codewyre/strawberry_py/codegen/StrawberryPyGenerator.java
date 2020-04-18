@@ -2,6 +2,8 @@ package net.codewyre.strawberry_py.codegen;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
+import org.openapitools.codegen.templating.mustache.LowercaseLambda;
+
 import io.swagger.models.properties.*;
 
 import java.util.*;
@@ -319,6 +321,7 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
      * are available in models, apis, and supporting files
      */
     additionalProperties.put("apiVersion", apiVersion);
+    additionalProperties.put("lowercase", new LowercaseLambda());
 
     /**
      * Supporting Files.  You can write single files for the generator with the
