@@ -24,11 +24,13 @@ class UserApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_delete('/v2/user/{username}')
+  @path_parameter('username', type=str, required=True)
   @abstractmethod
   def delete_user(self, username: str) -> None:
     return None
 
   @http_get('/v2/user/{username}')
+  @path_parameter('username', type=str, required=True)
   @abstractmethod
   def get_user_by_name(self, username: str) -> User:
     return None
@@ -46,6 +48,7 @@ class UserApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_put('/v2/user/{username}')
+  @path_parameter('username', type=str, required=True)
   @body_parameter('user', required=True)
   @abstractmethod
   def update_user(self, username: str, user: User) -> None:

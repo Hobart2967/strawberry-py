@@ -8,8 +8,8 @@ from abc import ABCMeta, abstractmethod
 class {{classname}}(ApiController, metaclass=ABCMeta):
 
 {{#operation}}
-  @http_{{#lowercase}}{{httpMethod}}{{/lowercase}}('{{{basePathWithoutHost}}}{{{path}}}'){{#allParams}}{{^isPathParam}}
-  {{>queryParam}}{{>formParam}}{{>headerParam}}{{>bodyParam}}{{>pathParam}}{{/isPathParam}}{{/allParams}}
+  @http_{{#lowercase}}{{httpMethod}}{{/lowercase}}('{{{basePathWithoutHost}}}{{{path}}}'){{#allParams}}
+  {{>queryParam}}{{>formParam}}{{>headerParam}}{{>bodyParam}}{{>pathParam}}{{/allParams}}
   @abstractmethod
   def {{operationId}}(self{{#allParams}}, {{#snakecase}}{{paramName}}{{/snakecase}}: {{#maptype}}{{&dataType}}{{/maptype}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}) -> {{#returnType}}{{#maptype}}{{returnType}}{{/maptype}}{{/returnType}}{{^returnType}}None{{/returnType}}:
     return None

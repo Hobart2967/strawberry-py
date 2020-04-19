@@ -6,6 +6,7 @@ from src.models.order import *
 class StoreApiController(ApiController, metaclass=ABCMeta):
 
   @http_delete('/v2/store/order/{orderId}')
+  @path_parameter('orderId', type=str, required=True)
   @abstractmethod
   def delete_order(self, order_id: str) -> None:
     return None
@@ -16,6 +17,7 @@ class StoreApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_get('/v2/store/order/{orderId}')
+  @path_parameter('orderId', type=int, required=True)
   @abstractmethod
   def get_order_by_id(self, order_id: int) -> Order:
     return None

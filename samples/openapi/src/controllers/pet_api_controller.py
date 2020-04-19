@@ -13,6 +13,7 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_delete('/v2/pet/{petId}')
+  @path_parameter('petId', type=int, required=True)
   @header_parameter('apiKey')
   @abstractmethod
   def delete_pet(self, pet_id: int, api_key: str=None) -> None:
@@ -31,6 +32,7 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_get('/v2/pet/{petId}')
+  @path_parameter('petId', type=int, required=True)
   @abstractmethod
   def get_pet_by_id(self, pet_id: int) -> Pet:
     return None
@@ -42,6 +44,7 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_post('/v2/pet/{petId}')
+  @path_parameter('petId', type=int, required=True)
   @form_parameter('name')
   @form_parameter('status')
   @abstractmethod
@@ -49,6 +52,7 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_post('/v2/pet/{petId}/uploadImage')
+  @path_parameter('petId', type=int, required=True)
   @form_parameter('additionalMetadata')
   @form_parameter('file')
   @abstractmethod
