@@ -1,4 +1,4 @@
-from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter
+from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter, path_parameter
 from abc import ABCMeta, abstractmethod
 
 from src.models.user import *
@@ -6,19 +6,19 @@ from src.models.user import *
 class UserApiController(ApiController, metaclass=ABCMeta):
 
   @http_post('/v2/user')
-  @body_parameter('user', required=True)
+  @body_parameter('user', type=User, required=True)
   @abstractmethod
   def create_user(self, user: User) -> None:
     return None
 
   @http_post('/v2/user/createWithArray')
-  @body_parameter('user', required=True)
+  @body_parameter('user', type=list, required=True)
   @abstractmethod
   def create_users_with_array_input(self, user: list) -> None:
     return None
 
   @http_post('/v2/user/createWithList')
-  @body_parameter('user', required=True)
+  @body_parameter('user', type=list, required=True)
   @abstractmethod
   def create_users_with_list_input(self, user: list) -> None:
     return None
@@ -36,8 +36,8 @@ class UserApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_get('/v2/user/login')
-  @query_string_parameter('username', required=True)
-  @query_string_parameter('password', required=True)
+  @query_string_parameter('username', type=str, required=True)
+  @query_string_parameter('password', type=str, required=True)
   @abstractmethod
   def login_user(self, username: str, password: str) -> str:
     return None
@@ -49,7 +49,7 @@ class UserApiController(ApiController, metaclass=ABCMeta):
 
   @http_put('/v2/user/{username}')
   @path_parameter('username', type=str, required=True)
-  @body_parameter('user', required=True)
+  @body_parameter('user', type=User, required=True)
   @abstractmethod
   def update_user(self, username: str, user: User) -> None:
     return None
