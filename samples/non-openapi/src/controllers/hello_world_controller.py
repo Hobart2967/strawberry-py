@@ -7,9 +7,12 @@ class HelloWorldController(ControllerBase):
     return
 
   @http_get('/hello/world/{first_name}/{last_name}')
-  def get_hello_world(self, first_name, last_name):
-    self.response.headers['X-API-RES'] = 'HarrrHarrr'
-    return 'Hello ' + last_name + ', ' + first_name + '!'
+  @query_string_parameter('greetInformal')
+  def get_hello_world(self, first_name, last_name, greet_informal=False):
+    greeting = 'Hello '
+    if greet_informal:
+      greeting = 'Yo, '
+    return greeting + last_name + ', ' + first_name + '!'
 
   @http_post('/hello/world/{first_name}', body_argument='contact_info')
   def post_hello_world(self, first_name, contact_info):

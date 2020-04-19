@@ -6,8 +6,9 @@ from src.controllers.{{#snakecase}}{{classname}}{{/snakecase}} import {{classnam
 class {{classname}}Impl({{classname}}):
 
 {{#operation}}
-  def {{operationId}}(self{{#allParams}}, {{paramName}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}):
-    return super.{{operationId}}(self{{#allParams}}, {{paramName}}{{/allParams}})
+  def {{operationId}}(self{{#allParams}}, {{paramName}}: {{#maptype}}{{&dataType}}{{/maptype}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}) -> {{#returnType}}{{returnType}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    super().{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
+    raise NotImplementedError
 
 {{/operation}}
 {{/operations}}

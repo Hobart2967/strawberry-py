@@ -36,7 +36,7 @@ public class StrawberryPyGeneratorTest {
               //.setInputSpec("https://raw.githubusercontent.com/openapitools/openapi-generator/master/modules/openapi-generator/src/test/resources/2_0/petstore.yaml") // or from the server
               //.setInputSpec("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml")
               .setAdditionalProperties(additionalProperties)
-              .setOutputDir("../../generator-tests"); // output directory
+              .setOutputDir("../../samples/openapi"); // output directory
 
     final ClientOptInput clientOptInput = configurator.toClientOptInput();
     DefaultGenerator generator = new DefaultGenerator();

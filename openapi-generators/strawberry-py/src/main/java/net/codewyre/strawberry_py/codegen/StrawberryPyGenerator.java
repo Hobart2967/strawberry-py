@@ -6,6 +6,7 @@ import org.openapitools.codegen.templating.mustache.LowercaseLambda;
 
 import io.swagger.models.properties.*;
 import io.swagger.v3.oas.models.media.Schema;
+import net.codewyre.strawberry_py.codegen.lambdas.MapDataTypeLambda;
 import net.codewyre.strawberry_py.codegen.lambdas.SnakeCaseLambda;
 
 import java.util.*;
@@ -98,6 +99,11 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
       // underscore the model file name
       // PhoneNumber => phone_number
       return underscore(dropDots(toModelName(name)));
+  }
+
+  @Override
+  public String toApiName(String name) {
+    return super.toApiName(name) + "Controller";
   }
 
   @Override
@@ -291,7 +297,7 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
 
     // set the output folder here
     outputFolder = "generated-code/strawberry-py";
-
+    importMapping = new HashMap();
     /**
      * Models.  You can write model files using the modelTemplateFiles map.
      * if you want to create one template for file, you can do so here.
@@ -324,12 +330,12 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     /**
      * Api Package.  Optional, if needed, this can be used in templates
      */
-    apiPackage = "strawberry_py";
+    apiPackage = "src.controllers";
 
     /**
      * Model Package.  Optional, if needed, this can be used in templates
      */
-    modelPackage = "strawberry_py";
+    modelPackage = "src.models";
 
     /**
      * Reserved words.  Override this with reserved words specific to your language
@@ -349,12 +355,14 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     additionalProperties.put("apiVersion", apiVersion);
     additionalProperties.put("lowercase", new LowercaseLambda());
     additionalProperties.put("snakecase", new SnakeCaseLambda());
+    additionalProperties.put("maptype", new MapDataTypeLambda());
     /**
      * Supporting Files.  You can write single files for the generator with the
      * entire object tree available.  If the input file has a suffix of `.mustache
      * it will be processed by the template engine.  Otherwise, it will be copied
      */
     supportingFiles.add(new SupportingFile("src/main.mustache", "", "src/main.py"));
+    supportingFiles.add(new SupportingFile(".openapi-generator-ignore.mustache", "", ".openapi-generator-ignore"));
     supportingFiles.add(new SupportingFile("serverless.mustache", "", "serverless.yml"));
     supportingFiles.add(new SupportingFile("package.mustache", "", "package.json"));
     supportingFiles.add(new SupportingFile("src/__init__.mustache", "", "src/__init__.py"));
@@ -367,9 +375,16 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
      */
     languageSpecificPrimitives = new HashSet<String>(
       Arrays.asList(
-        "Type1",      // replace these with your types
-        "Type2")
+        "string",      // replace these with your types
+        "file",
+        "integer",
+        "list",
+        "array",
+        "List",
+        "Array")
     );
+
+    
   }
 
 

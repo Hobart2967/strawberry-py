@@ -1,6 +1,9 @@
 from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter
 from abc import ABCMeta, abstractmethod
 
+{{#imports}}from {{#snakecase}}{{import}}{{/snakecase}} import *
+{{/imports}}
+
 {{#operations}}
 class {{classname}}(ApiController, metaclass=ABCMeta):
 
@@ -8,8 +11,8 @@ class {{classname}}(ApiController, metaclass=ABCMeta):
   @http_{{#lowercase}}{{httpMethod}}{{/lowercase}}('{{{basePathWithoutHost}}}{{{path}}}'){{#allParams}}{{^isPathParam}}
   {{>queryParam}}{{>formParam}}{{>headerParam}}{{>bodyParam}}{{>pathParam}}{{/isPathParam}}{{/allParams}}
   @abstractmethod
-  def {{operationId}}(self{{#allParams}}, {{paramName}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}):
-    return NotImplemented
+  def {{operationId}}(self{{#allParams}}, {{paramName}}: {{#maptype}}{{&dataType}}{{/maptype}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}) -> {{#returnType}}{{returnType}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    return None
 
 {{/operation}}
 {{/operations}}

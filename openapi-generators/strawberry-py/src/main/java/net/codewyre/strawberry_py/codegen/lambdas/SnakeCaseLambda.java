@@ -4,6 +4,10 @@ import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import org.openapitools.codegen.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.*;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -45,6 +49,19 @@ public class SnakeCaseLambda implements Mustache.Lambda {
   }
 
   private String upperUnderscoreWithAcronyms(String name) {
+    return SnakeCaseLambda.toSnakeCase(name);
+  }
+
+  private static String toSnakeCase(String name) {
+    if (name.contains(".")) {
+      String[] segments = name.split("\\.");
+      for (int i = 0; i < segments.length; i++) {
+        segments[i] = SnakeCaseLambda.toSnakeCase(segments[i]);
+      }
+
+      return String.join(".", segments);
+    }
+
     StringBuffer result = new StringBuffer();
     boolean begin = true;
     boolean lastUppercase = false;

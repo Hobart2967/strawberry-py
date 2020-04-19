@@ -22,7 +22,6 @@ class ControllerHandler:
     self.endpoints = []
 
   def register_controller(self, controller_class, controller_implementation_class):
-    print('Controller registration running')
 
     endpoints = self.get_controller_endpoints(controller_class, controller_implementation_class)
 
@@ -70,7 +69,6 @@ class ControllerHandler:
     }
 
     if not endpoint_call is None:
-      print('Calling controller...')
       http_response.statusCode = 200 # default, may be changed by endpoint_call
       http_response.body = endpoint_call.invoke(http_request, http_response)
 

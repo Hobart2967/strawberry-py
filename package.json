@@ -1,0 +1,14 @@
+{
+  "name": "strawberry-py",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Hobart2967/strawberry-py",
+  "author": "Hobart2967 <marco.klein@avsn.de>",
+  "license": "MIT",
+  "scripts": {
+    "setup": "cd samples/non-openapi && yarn && cd ../openapi && yarn",
+    "build-openapi-sample": "cd openapi-generators/strawberry-py && mvn test",
+    "start-sample": "cd samples/non-openapi && yarn serverless offline",
+    "start-openapi-sample": "cd samples/openapi && yarn serverless offline"
+  }
+}

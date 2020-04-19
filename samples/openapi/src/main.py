@@ -4,11 +4,9 @@ sys.path.insert(0, os.path.join(os.getcwd(), os.path.dirname(__file__), '..', '.
 from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse
 
 #region Controllers
-{{#apiInfo}}
-{{#apis}}
-from src.controllers.{{#snakecase}}{{classname}}{{/snakecase}}_impl import {{classname}}Impl
-{{/apis}}
-{{/apiInfo}}
+from src.controllers.pet_api_controller_impl import PetApiControllerImpl
+from src.controllers.store_api_controller_impl import StoreApiControllerImpl
+from src.controllers.user_api_controller_impl import UserApiControllerImpl
 #endregion
 
 def handler(event, context):

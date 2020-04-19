@@ -11,7 +11,7 @@ class AwsLambdaRequest(HttpRequest):
     self.headers = self.event['headers']
     self.path = self.event['path']
     self.user_agent = self.event['requestContext']['identity']['userAgent']
-    self.method = self.event['httpMethod']
+    self.http_method = self.event['httpMethod']
     self.query_string = self.event['queryStringParameters']
     self.body = self.event['body']
 
@@ -20,7 +20,7 @@ class AwsLambdaRequest(HttpRequest):
       'headers': self.headers,
       'path': self.path,
       'user_agent': self.user_agent,
-      'method': self.method,
+      'method': self.http_method,
       'query_string': self.query_string,
       'body': self.body
     })

@@ -3,13 +3,20 @@ from models.aws_lambda_response import AwsLambdaResponse
 from models.http_request import HttpRequest
 from models.http_response import HttpResponse
 from models.api_controller import ApiController
+from models.model import Model
 
 from services.controller_handler import ControllerHandler
 
-from decorators.http_get_decorator import http_get
-from decorators.http_post_decorator import http_post
-from decorators.http_put_decorator import http_put
-from decorators.http_patch_decorator import http_patch
-from decorators.http_delete_decorator import http_delete
-from decorators.http_decorator import http
+from decorators.methods.http_get_decorator import http_get
+from decorators.methods.http_post_decorator import http_post
+from decorators.methods.http_put_decorator import http_put
+from decorators.methods.http_patch_decorator import http_patch
+from decorators.methods.http_delete_decorator import http_delete
+from decorators.methods.http_decorator import http
+
+from decorators.parameters.body_parameter import body_parameter
+from decorators.parameters.form_parameter import form_parameter
+from decorators.parameters.header_parameter import header_parameter
+from decorators.parameters.query_string_parameter import query_string_parameter
+
 from decorators.controller_decorator import controller
