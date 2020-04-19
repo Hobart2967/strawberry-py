@@ -14,6 +14,7 @@ from decorators.methods.http_patch_decorator import http_patch
 from decorators.methods.http_delete_decorator import http_delete
 from decorators.methods.http_decorator import http
 
+from decorators.parameters.path_parameter import path_parameter
 from decorators.parameters.body_parameter import body_parameter
 from decorators.parameters.form_parameter import form_parameter
 from decorators.parameters.header_parameter import header_parameter
