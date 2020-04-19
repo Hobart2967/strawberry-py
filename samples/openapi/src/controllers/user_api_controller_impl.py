@@ -1,10 +1,13 @@
 from strawberry_py import controller
 from src.controllers.user_api_controller import UserApiController
 
+from src.models.user import *
+
+
 @controller(UserApiController)
 class UserApiControllerImpl(UserApiController):
 
-  def create_user(self, user: user) -> None:
+  def create_user(self, user: User) -> None:
     super().create_user(user)
     raise NotImplementedError
 
@@ -24,7 +27,7 @@ class UserApiControllerImpl(UserApiController):
     super().get_user_by_name(username)
     raise NotImplementedError
 
-  def login_user(self, username: str, password: str) -> String:
+  def login_user(self, username: str, password: str) -> str:
     super().login_user(username, password)
     raise NotImplementedError
 
@@ -32,7 +35,7 @@ class UserApiControllerImpl(UserApiController):
     super().logout_user()
     raise NotImplementedError
 
-  def update_user(self, username: str, user: user) -> None:
+  def update_user(self, username: str, user: User) -> None:
     super().update_user(username, user)
     raise NotImplementedError
 

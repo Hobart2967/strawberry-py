@@ -5,7 +5,7 @@ from src.models.category import *
 from src.models.tag import *
 
 class Pet(Model):
-     def __init__(self, id: int=None, category: category=None, name: str=None, photo_urls: list=None, tags: list=None, status: str=None):
+     def __init__(self, id: int=None, category: Category=None, name: str=None, photo_urls: list=None, tags: list=None, status: str=None):
       self._id = id
       self._category = category
       self._name = name

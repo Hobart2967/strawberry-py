@@ -2,7 +2,6 @@ from strawberry_py import ApiController, http_get, http_put, http_post, http_pat
 from abc import ABCMeta, abstractmethod
 
 from src.models.order import *
-from src.models.map import *
 
 class StoreApiController(ApiController, metaclass=ABCMeta):
 
@@ -13,7 +12,7 @@ class StoreApiController(ApiController, metaclass=ABCMeta):
 
   @http_get('/v2/store/inventory')
   @abstractmethod
-  def get_inventory(self) -> Map:
+  def get_inventory(self) -> dict:
     return None
 
   @http_get('/v2/store/order/{orderId}')
@@ -24,6 +23,6 @@ class StoreApiController(ApiController, metaclass=ABCMeta):
   @http_post('/v2/store/order')
   @body_parameter('order', required=True)
   @abstractmethod
-  def place_order(self, order: order) -> Order:
+  def place_order(self, order: Order) -> Order:
     return None
 

@@ -1,13 +1,17 @@
 from strawberry_py import controller
 from src.controllers.{{#snakecase}}{{classname}}{{/snakecase}} import {{classname}}
 
+{{#imports}}from {{#snakecase}}{{import}}{{/snakecase}} import *
+{{/imports}}
+
+
 {{#operations}}
 @controller({{classname}})
 class {{classname}}Impl({{classname}}):
 
 {{#operation}}
-  def {{operationId}}(self{{#allParams}}, {{paramName}}: {{#maptype}}{{&dataType}}{{/maptype}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}) -> {{#returnType}}{{returnType}}{{/returnType}}{{^returnType}}None{{/returnType}}:
-    super().{{operationId}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
+  def {{operationId}}(self{{#allParams}}, {{#snakecase}}{{paramName}}{{/snakecase}}: {{#maptype}}{{&dataType}}{{/maptype}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}) -> {{#returnType}}{{#maptype}}{{returnType}}{{/maptype}}{{/returnType}}{{^returnType}}None{{/returnType}}:
+    super().{{operationId}}({{#allParams}}{{#snakecase}}{{paramName}}{{/snakecase}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
     raise NotImplementedError
 
 {{/operation}}

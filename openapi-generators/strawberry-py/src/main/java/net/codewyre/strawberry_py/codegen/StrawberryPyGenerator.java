@@ -50,7 +50,10 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
       return underscore(toApiName(name));
   }
 
-  
+  @Override
+  public String getTypeDeclaration(Schema schema) {
+    return  super.getTypeDeclaration(schema);
+  }
 
   @Override
   public String toVarName(String name) {
@@ -80,15 +83,15 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
       return name;
   }
 
-  @Override
-  public String toParamName(String name) {
-      // don't do name =removeNonNameElementToCamelCase(name); // this breaks connexion, which does not modify param names before sending them
-      if (reservedWords.contains(name)) {
-          name = escapeReservedWord(name);
-      }
-      // Param name is already sanitized in swagger spec processing
-      return toVarName(name);
-  }
+  //@Override
+  //public String toParamName(String name) {
+  //    // don't do name =removeNonNameElementToCamelCase(name); // this breaks connexion, which does not modify param names before sending them
+  //    if (reservedWords.contains(name)) {
+  //        name = escapeReservedWord(name);
+  //    }
+  //    // Param name is already sanitized in swagger spec processing
+  //    return toVarName(name);
+  //}
 
   private static String dropDots(String str) {
     return str.replaceAll("\\.", "_");
@@ -245,6 +248,10 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
       return underscore(sanitizeName(operationId));
   }
 
+  @Override
+  public String getSchemaType(Schema schema) {
+    return super.getSchemaType(schema);
+  }
 
   @Override
   public void processOpts() {
@@ -298,6 +305,8 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     // set the output folder here
     outputFolder = "generated-code/strawberry-py";
     importMapping = new HashMap();
+    importMapping.put("DateTime", "datetime");
+    importMapping.put("Date", "datetime");
     /**
      * Models.  You can write model files using the modelTemplateFiles map.
      * if you want to create one template for file, you can do so here.
@@ -381,10 +390,10 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
         "list",
         "array",
         "List",
-        "Array")
+        "Array",
+        "Map",
+        "map")
     );
-
-    
   }
 
 
@@ -397,6 +406,9 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     @Override
     public String toDefaultValue(Schema schema) {
       if (schema.getDefault() != null) {
+        if (schema.getType() == "boolean") {
+          return camelize(schema.getDefault().toString());
+        }
         return schema.getDefault().toString();
       }
 

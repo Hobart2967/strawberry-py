@@ -8,7 +8,7 @@ class UserApiController(ApiController, metaclass=ABCMeta):
   @http_post('/v2/user')
   @body_parameter('user', required=True)
   @abstractmethod
-  def create_user(self, user: user) -> None:
+  def create_user(self, user: User) -> None:
     return None
 
   @http_post('/v2/user/createWithArray')
@@ -37,7 +37,7 @@ class UserApiController(ApiController, metaclass=ABCMeta):
   @query_string_parameter('username', required=True)
   @query_string_parameter('password', required=True)
   @abstractmethod
-  def login_user(self, username: str, password: str) -> String:
+  def login_user(self, username: str, password: str) -> str:
     return None
 
   @http_get('/v2/user/logout')
@@ -48,6 +48,6 @@ class UserApiController(ApiController, metaclass=ABCMeta):
   @http_put('/v2/user/{username}')
   @body_parameter('user', required=True)
   @abstractmethod
-  def update_user(self, username: str, user: user) -> None:
+  def update_user(self, username: str, user: User) -> None:
     return None
 

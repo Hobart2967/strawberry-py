@@ -9,11 +9,11 @@ class PetApiController(ApiController, metaclass=ABCMeta):
   @http_post('/v2/pet')
   @body_parameter('pet', required=True)
   @abstractmethod
-  def add_pet(self, pet: pet) -> None:
+  def add_pet(self, pet: Pet) -> None:
     return None
 
   @http_delete('/v2/pet/{petId}')
-  @header_parameter('api_key')
+  @header_parameter('apiKey')
   @abstractmethod
   def delete_pet(self, pet_id: int, api_key: str=None) -> None:
     return None
@@ -21,13 +21,13 @@ class PetApiController(ApiController, metaclass=ABCMeta):
   @http_get('/v2/pet/findByStatus')
   @query_string_parameter('status', required=True)
   @abstractmethod
-  def find_pets_by_status(self, status: list) -> List:
+  def find_pets_by_status(self, status: list) -> list:
     return None
 
   @http_get('/v2/pet/findByTags')
   @query_string_parameter('tags', required=True)
   @abstractmethod
-  def find_pets_by_tags(self, tags: list) -> List:
+  def find_pets_by_tags(self, tags: list) -> list:
     return None
 
   @http_get('/v2/pet/{petId}')
@@ -38,7 +38,7 @@ class PetApiController(ApiController, metaclass=ABCMeta):
   @http_put('/v2/pet')
   @body_parameter('pet', required=True)
   @abstractmethod
-  def update_pet(self, pet: pet) -> None:
+  def update_pet(self, pet: Pet) -> None:
     return None
 
   @http_post('/v2/pet/{petId}')
@@ -49,9 +49,9 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_post('/v2/pet/{petId}/uploadImage')
-  @form_parameter('additional_metadata')
+  @form_parameter('additionalMetadata')
   @form_parameter('file')
   @abstractmethod
-  def upload_file(self, pet_id: int, additional_metadata: str=None, file: file=None) -> ApiResponse:
+  def upload_file(self, pet_id: int, additional_metadata: str=None, file: 'file'=None) -> ApiResponse:
     return None
 

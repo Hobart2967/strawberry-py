@@ -1,6 +1,9 @@
 from strawberry_py import controller
 from src.controllers.store_api_controller import StoreApiController
 
+from src.models.order import *
+
+
 @controller(StoreApiController)
 class StoreApiControllerImpl(StoreApiController):
 
@@ -8,7 +11,7 @@ class StoreApiControllerImpl(StoreApiController):
     super().delete_order(order_id)
     raise NotImplementedError
 
-  def get_inventory(self) -> Map:
+  def get_inventory(self) -> dict:
     super().get_inventory()
     raise NotImplementedError
 
@@ -16,7 +19,7 @@ class StoreApiControllerImpl(StoreApiController):
     super().get_order_by_id(order_id)
     raise NotImplementedError
 
-  def place_order(self, order: order) -> Order:
+  def place_order(self, order: Order) -> Order:
     super().place_order(order)
     raise NotImplementedError
 

@@ -41,7 +41,7 @@ public class MapDataTypeLambda implements Mustache.Lambda {
 
   @Override
   public void execute(Template.Fragment fragment, Writer writer) throws IOException {
-    String text = mapType(fragment.execute()).toLowerCase();
+    String text = mapType(fragment.execute());
     if (generator != null && generator.reservedWords().contains(text)) {
       text = generator.escapeReservedWord(text);
     }
@@ -53,8 +53,13 @@ public class MapDataTypeLambda implements Mustache.Lambda {
     HashMap<String, String> typeMap = new HashMap<>();
     typeMap.put("String", "str");
     typeMap.put("Long", "int");
+    typeMap.put("List", "list");
     typeMap.put("Integer", "int");
-    typeMap.put("boolean", "bool");
+    typeMap.put("Boolean", "bool");
+    typeMap.put("File", "'file'");
+    typeMap.put("DateTime", "datetime");
+    typeMap.put("Date", "date");
+    typeMap.put("Map", "dict");
 
     if (typeMap.containsKey(name)) {
       return typeMap.get(name);

@@ -1,10 +1,14 @@
 from strawberry_py import controller
 from src.controllers.pet_api_controller import PetApiController
 
+from src.models.api_response import *
+from src.models.pet import *
+
+
 @controller(PetApiController)
 class PetApiControllerImpl(PetApiController):
 
-  def add_pet(self, pet: pet) -> None:
+  def add_pet(self, pet: Pet) -> None:
     super().add_pet(pet)
     raise NotImplementedError
 
@@ -12,11 +16,11 @@ class PetApiControllerImpl(PetApiController):
     super().delete_pet(pet_id, api_key)
     raise NotImplementedError
 
-  def find_pets_by_status(self, status: list) -> List:
+  def find_pets_by_status(self, status: list) -> list:
     super().find_pets_by_status(status)
     raise NotImplementedError
 
-  def find_pets_by_tags(self, tags: list) -> List:
+  def find_pets_by_tags(self, tags: list) -> list:
     super().find_pets_by_tags(tags)
     raise NotImplementedError
 
@@ -24,7 +28,7 @@ class PetApiControllerImpl(PetApiController):
     super().get_pet_by_id(pet_id)
     raise NotImplementedError
 
-  def update_pet(self, pet: pet) -> None:
+  def update_pet(self, pet: Pet) -> None:
     super().update_pet(pet)
     raise NotImplementedError
 
@@ -32,7 +36,7 @@ class PetApiControllerImpl(PetApiController):
     super().update_pet_with_form(pet_id, name, status)
     raise NotImplementedError
 
-  def upload_file(self, pet_id: int, additional_metadata: str=None, file: file=None) -> ApiResponse:
+  def upload_file(self, pet_id: int, additional_metadata: str=None, file: 'file'=None) -> ApiResponse:
     super().upload_file(pet_id, additional_metadata, file)
     raise NotImplementedError
 

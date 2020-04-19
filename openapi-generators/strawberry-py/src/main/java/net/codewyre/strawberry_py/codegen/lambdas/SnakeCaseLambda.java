@@ -45,7 +45,6 @@ public class SnakeCaseLambda implements Mustache.Lambda {
       text = generator.escapeReservedWord(text);
     }
     writer.write(text);
-
   }
 
   private String upperUnderscoreWithAcronyms(String name) {
