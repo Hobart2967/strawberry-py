@@ -1,0 +1,11 @@
+# This is a sample model mustache template.
+from {{modelPackage}}.model import Model
+{{#models}}
+{{#model}}
+class {{classname}}(Model):
+     def __init__(self{{#vars}}, {{name}}: {{datatype}}={{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}None{{/defaultValue}}{{/vars}}):
+      {{#vars}}
+      self._{{name}} = {{name}}
+      {{/vars}}
+{{/model}}
+{{/models}}

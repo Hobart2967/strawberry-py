@@ -1,5 +1,8 @@
 package net.codewyre.strawberry_py.codegen;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 import org.openapitools.codegen.ClientOptInput;
 import org.openapitools.codegen.DefaultGenerator;
@@ -23,10 +26,16 @@ public class StrawberryPyGeneratorTest {
   public void launchCodeGenerator() {
     // to understand how the 'openapi-generator-cli' module is using 'CodegenConfigurator', have a look at the 'Generate' class:
     // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-cli/src/main/java/org/openapitools/codegen/cmd/Generate.java
+
+    Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    additionalProperties.put("packageName", "strawberry-petstore");
+
     final CodegenConfigurator configurator = new CodegenConfigurator()
               .setGeneratorName("strawberry-py") // use this codegen library
-              .setInputSpec("./src/main/resources/openapi.yaml") // sample OpenAPI file
-              // .setInputSpec("https://raw.githubusercontent.com/openapitools/openapi-generator/master/modules/openapi-generator/src/test/resources/2_0/petstore.yaml") // or from the server
+              .setInputSpec("./src/main/resources/petstore.yaml") // sample OpenAPI file
+              //.setInputSpec("https://raw.githubusercontent.com/openapitools/openapi-generator/master/modules/openapi-generator/src/test/resources/2_0/petstore.yaml") // or from the server
+              //.setInputSpec("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml")
+              .setAdditionalProperties(additionalProperties)
               .setOutputDir("../../generator-tests"); // output directory
 
     final ClientOptInput clientOptInput = configurator.toClientOptInput();

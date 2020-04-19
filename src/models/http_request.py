@@ -1,4 +1,4 @@
-class Request:
+class HttpRequest:
   def __init__(self):
     self.headers = None
     self.path = None

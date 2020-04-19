@@ -1,8 +1,7 @@
 from models.endpoint_info import EndpointInfo
 
-def http_put(route, body_argument):
+def http_put(route):
   def decorator(controller_method):
-    controller_method.endpoint_info = EndpointInfo('PUT', route, controller_method)
-    controller_method.endpoint_info.body_argument = body_argument
+    controller_method.endpoint_info = EndpointInfo('PUT', route)
     return controller_method
   return decorator

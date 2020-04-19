@@ -1,7 +1,7 @@
-from .response import Response
+from .http_response import HttpResponse
 import json
 
-class AwsLambdaResponse(Response):
+class AwsLambdaResponse(HttpResponse):
   def from_response(response):
     aws_response = AwsLambdaResponse()
     aws_response.statusCode = response.statusCode

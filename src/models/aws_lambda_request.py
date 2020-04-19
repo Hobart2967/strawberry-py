@@ -1,6 +1,6 @@
-from .request import Request
+from .http_request import HttpRequest
 
-class AwsLambdaRequest(Request):
+class AwsLambdaRequest(HttpRequest):
   def __init__(self, event, context):
     super().__init__()
     self.event = event

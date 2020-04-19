@@ -1,4 +1,4 @@
-class Response:
+class HttpResponse:
   def __init__(self):
     super().__init__()
     self.statusCode = 200

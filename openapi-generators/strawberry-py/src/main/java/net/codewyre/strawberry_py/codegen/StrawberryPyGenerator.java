@@ -5,6 +5,8 @@ import org.openapitools.codegen.*;
 import org.openapitools.codegen.templating.mustache.LowercaseLambda;
 
 import io.swagger.models.properties.*;
+import io.swagger.v3.oas.models.media.Schema;
+import net.codewyre.strawberry_py.codegen.lambdas.SnakeCaseLambda;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -29,6 +31,9 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     return CodegenType.OTHER;
   }
 
+
+  protected String packageName = "strawberry-codegen-project";
+
   /**
    * Configures a friendly name for the generator.  This will be used by the generator
    * to select the library with the -g flag.
@@ -43,6 +48,8 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
   public String toApiFilename(String name) {
       return underscore(toApiName(name));
   }
+
+  
 
   @Override
   public String toVarName(String name) {
@@ -233,6 +240,17 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
   }
 
 
+  @Override
+  public void processOpts() {
+      super.processOpts();
+      // {{packageName}}
+      if (additionalProperties.containsKey(CodegenConstants.PACKAGE_NAME)) {
+          this.packageName = ((String) additionalProperties.get(CodegenConstants.PACKAGE_NAME));
+      } else {
+          additionalProperties.put(CodegenConstants.PACKAGE_NAME, packageName);
+      }
+  }
+
   /**
    * Provides an opportunity to inspect and modify operation data before the code is generated.
    */
@@ -281,7 +299,7 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
      * a different extension
      */
     modelTemplateFiles.put(
-      "model.mustache", // the template to use
+      "src/models/model.mustache", // the template to use
       ".py");       // the extension for each file to write
 
     /**
@@ -290,9 +308,13 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
      * class
      */
     apiTemplateFiles.put(
-      "api.mustache",   // the template to use
+      "src/controllers/controller.mustache",   // the template to use
       ".py");       // the extension for each file to write
 
+    apiTemplateFiles.put(
+        "src/controllers/controller_impl.mustache",   // the template to use
+        "_impl.py");       // the extension for each file to write
+  
     /**
      * Template Location.  This is the location which templates will be read from.  The generator
      * will use the resource stream to attempt to read the templates.
@@ -302,12 +324,12 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     /**
      * Api Package.  Optional, if needed, this can be used in templates
      */
-    apiPackage = "org.openapitools.api";
+    apiPackage = "strawberry_py";
 
     /**
      * Model Package.  Optional, if needed, this can be used in templates
      */
-    modelPackage = "org.openapitools.model";
+    modelPackage = "strawberry_py";
 
     /**
      * Reserved words.  Override this with reserved words specific to your language
@@ -316,22 +338,28 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
       Arrays.asList()
     );
 
+    addOption(CodegenConstants.PACKAGE_NAME,
+      "C# package name (convention: Title.Case).",
+      this.packageName);
+
     /**
      * Additional Properties.  These values can be passed to the templates and
      * are available in models, apis, and supporting files
      */
     additionalProperties.put("apiVersion", apiVersion);
     additionalProperties.put("lowercase", new LowercaseLambda());
-
+    additionalProperties.put("snakecase", new SnakeCaseLambda());
     /**
      * Supporting Files.  You can write single files for the generator with the
      * entire object tree available.  If the input file has a suffix of `.mustache
      * it will be processed by the template engine.  Otherwise, it will be copied
      */
-    supportingFiles.add(new SupportingFile("main.mustache",   // the input template or file
-      "",                                                       // the destination folder, relative `outputFolder`
-      "main.py")                                          // the output file
-    );
+    supportingFiles.add(new SupportingFile("src/main.mustache", "", "src/main.py"));
+    supportingFiles.add(new SupportingFile("serverless.mustache", "", "serverless.yml"));
+    supportingFiles.add(new SupportingFile("package.mustache", "", "package.json"));
+    supportingFiles.add(new SupportingFile("src/__init__.mustache", "", "src/__init__.py"));
+    supportingFiles.add(new SupportingFile("src/models/__init__.mustache", "", "src/models/__init__.py"));
+    supportingFiles.add(new SupportingFile("src/controllers/__init__.mustache", "", "src/controllers/__init__.py"));
 
     /**
      * Language Specific Primitives.  These types will not trigger imports by
@@ -343,6 +371,22 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
         "Type2")
     );
   }
+
+
+   /**
+     * Return the default value of the property
+     *
+     * @param p Swagger property object
+     * @return string presentation of the default value of the property
+     */
+    @Override
+    public String toDefaultValue(Schema schema) {
+      if (schema.getDefault() != null) {
+        return schema.getDefault().toString();
+      }
+
+      return "None"; //getPropertyDefaultValue(schema);
+    }
 
   public static String underscore(String word) {
     String firstPattern = "([A-Z]+)([A-Z][a-z])";

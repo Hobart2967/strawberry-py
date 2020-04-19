@@ -1,0 +1,13 @@
+from strawberry_py import controller
+from src.controllers.{{#snakecase}}{{classname}}{{/snakecase}} import {{classname}}
+
+{{#operations}}
+@controller({{classname}})
+class {{classname}}Impl({{classname}}):
+
+{{#operation}}
+  def {{operationId}}(self{{#allParams}}, {{paramName}}{{^required}}{{#defaultValue}}={{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}=None{{/defaultValue}}{{/required}}{{/allParams}}):
+    return super.{{operationId}}(self{{#allParams}}, {{paramName}}{{/allParams}})
+
+{{/operation}}
+{{/operations}}

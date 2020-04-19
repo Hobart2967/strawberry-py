@@ -2,12 +2,12 @@ from models.url_matcher import UrlMatcher
 from models.endpoint_call import EndpointCall
 
 class EndpointInfo:
-  def __init__(self, http_method, route, controller_method):
+  def __init__(self, http_method, route):
     self.http_method = http_method
     self.route = route
     self.matcher = UrlMatcher(route, http_method)
-    self.handler = controller_method
     self.controller = None
+    self.handler = None
     self.body_argument = None
 
   def __str__(self):
