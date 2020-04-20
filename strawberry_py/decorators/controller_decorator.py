@@ -1,4 +1,4 @@
-from services.controller_handler import ControllerHandler
+from strawberry_py.services.controller_handler import ControllerHandler
 
 def controller(controller_class):
   def decorator(controller_impl_class):

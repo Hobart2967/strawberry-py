@@ -1,5 +1,5 @@
-from models.url_match_result import UrlMatchResult
-from util.to_snake_case import to_snake_case
+from strawberry_py.models.url_match_result import UrlMatchResult
+from strawberry_py.util.to_snake_case import to_snake_case
 
 from typing import Pattern
 import re

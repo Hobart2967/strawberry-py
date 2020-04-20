@@ -1,4 +1,4 @@
-from .http_response import HttpResponse
+from strawberry_py.models.http_response import HttpResponse
 import json
 
 class AwsLambdaResponse(HttpResponse):

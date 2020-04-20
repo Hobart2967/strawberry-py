@@ -1,5 +1,5 @@
 from .util import append_argument_to_method
-from models.parameter_source import ParameterSource
+from strawberry_py.models.parameter_source import ParameterSource
 
 def header_parameter(name, type, required=False, maximum_length=None, minimum_length=None, pattern=None):
   source = ParameterSource.HEADER

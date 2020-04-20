@@ -1,4 +1,4 @@
-from .http_request import HttpRequest
+from strawberry_py.models.http_request import HttpRequest
 
 class AwsLambdaRequest(HttpRequest):
   def __init__(self, event, context):

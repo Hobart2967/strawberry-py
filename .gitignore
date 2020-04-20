@@ -3,7 +3,9 @@ __pycache__
 generator-tests
 node_modules
 target
-
+dist
+*.egg-info
 .history
+build
 openapi-generators/strawberry-py/.factorypath
 openapi-generators/strawberry-py/.factorypath

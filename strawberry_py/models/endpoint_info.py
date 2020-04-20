@@ -1,5 +1,5 @@
-from models.url_matcher import UrlMatcher
-from models.endpoint_call import EndpointCall
+from strawberry_py.models.url_matcher import UrlMatcher
+from strawberry_py.models.endpoint_call import EndpointCall
 
 class EndpointInfo:
   def __init__(self, http_method, route):

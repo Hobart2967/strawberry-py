@@ -1,4 +1,4 @@
-from models.endpoint_info import EndpointInfo
+from strawberry_py.models.endpoint_info import EndpointInfo
 
 def http_patch(route):
   def decorator(controller_method):

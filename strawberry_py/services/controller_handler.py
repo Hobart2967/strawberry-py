@@ -3,9 +3,9 @@ from optparse import OptionParser
 import re
 import json
 
-from models.http_request import HttpRequest
-from models.http_response import HttpResponse
-from models.url_matcher import UrlMatcher
+from strawberry_py.models.http_request import HttpRequest
+from strawberry_py.models.http_response import HttpResponse
+from strawberry_py.models.url_matcher import UrlMatcher
 
 FUNCTION_NAME = 0
 FUNCTION_HANDLER = 1
