@@ -16,6 +16,6 @@ def handler(event, context):
   return aws_lambda_response.get_lambda_result()
 
 def handle_http_request(http_request):
-  controller_handler = ControllerHandler.get_instance()
+  controller_handler = ControllerHandler.instance
   http_response = controller_handler.handleRequest(http_request)
   return http_response

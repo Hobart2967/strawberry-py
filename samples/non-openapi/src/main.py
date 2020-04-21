@@ -9,7 +9,7 @@ from .controllers.hello_world_controller import HelloWorldController
 
 def handler(event, context):
   request = AwsLambdaRequest(event, context)
-  controller_handler = ControllerHandler.get_instance()
+  controller_handler = ControllerHandler.instance
   response = controller_handler.handleRequest(request)
 
   return AwsLambdaResponse.from_response(response).get_lambda_result()
