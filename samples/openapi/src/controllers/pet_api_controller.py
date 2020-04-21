@@ -55,8 +55,8 @@ class PetApiController(ApiController, metaclass=ABCMeta):
   @http_post('/v2/pet/{petId}/uploadImage')
   @path_parameter('petId', type=int, required=True)
   @form_parameter('additionalMetadata', type=str)
-  @form_parameter('file', type='file')
+  @form_parameter('file', type=str)
   @abstractmethod
-  def upload_file(self, pet_id: int, additional_metadata: str=None, file: 'file'=None) -> ApiResponse:
+  def upload_file(self, pet_id: int, additional_metadata: str=None, file: str=None) -> ApiResponse:
     return None
 

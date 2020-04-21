@@ -24,7 +24,7 @@ class Order(Model):
 
 
     @property
-    @serialize('pet_id', int)
+    @serialize('petId', int)
     def pet_id(self):
       return self._pet_id
 
@@ -44,7 +44,7 @@ class Order(Model):
 
 
     @property
-    @serialize('ship_date', date)
+    @serialize('shipDate', date)
     def ship_date(self):
       return self._ship_date
 

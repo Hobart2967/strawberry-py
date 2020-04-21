@@ -35,7 +35,7 @@ class User(Model):
 
 
     @property
-    @serialize('first_name', str)
+    @serialize('firstName', str)
     def first_name(self):
       return self._first_name
 
@@ -45,7 +45,7 @@ class User(Model):
 
 
     @property
-    @serialize('last_name', str)
+    @serialize('lastName', str)
     def last_name(self):
       return self._last_name
 
@@ -85,7 +85,7 @@ class User(Model):
 
 
     @property
-    @serialize('user_status', int)
+    @serialize('userStatus', int)
     def user_status(self):
       return self._user_status
 

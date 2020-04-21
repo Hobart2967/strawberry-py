@@ -45,7 +45,7 @@ class Pet(Model):
 
 
     @property
-    @serialize('photo_urls', List[str])
+    @serialize('photoUrls', List[str])
     def photo_urls(self):
       return self._photo_urls
 

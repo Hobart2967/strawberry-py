@@ -69,7 +69,7 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     //typeMap.put("List", "list");
     typeMap.put("Integer", "int");
     typeMap.put("Boolean", "bool");
-    typeMap.put("File", "'file'");
+    typeMap.put("File", "str");
     typeMap.put("DateTime", "datetime");
     typeMap.put("Date", "date");
     typeMap.put("Map", "Dict");
@@ -80,33 +80,33 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     return result;
   }
 
-  @Override
-  public String toVarName(String name) {
-      // sanitize name
-      name = sanitizeName(name); // FIXME: a parameter should not be assigned. Also declare the methods parameters as 'final'.
-
-      // remove dollar sign
-      name = name.replaceAll("$", "");
-
-      // if it's all uppper case, convert to lower case
-      if (name.matches("^[A-Z_]*$")) {
-          name = name.toLowerCase();
-      }
-
-      // underscore the variable name
-      // petId => pet_id
-      name = underscore(name);
-
-      // remove leading underscore
-      name = name.replaceAll("^_*", "");
-
-      // for reserved word or word starting with number, append _
-      if (isReservedWord(name) || name.matches("^\\d.*")) {
-          name = escapeReservedWord(name);
-      }
-
-      return name;
-  }
+  //@Override
+  //public String toVarName(String name) {
+  //    // sanitize name
+  //    name = sanitizeName(name); // FIXME: a parameter should not be assigned. Also declare the methods parameters as 'final'.
+//
+  //    // remove dollar sign
+  //    name = name.replaceAll("$", "");
+//
+  //    // if it's all uppper case, convert to lower case
+  //    if (name.matches("^[A-Z_]*$")) {
+  //        name = name.toLowerCase();
+  //    }
+//
+  //    // underscore the variable name
+  //    // petId => pet_id
+  //    name = underscore(name);
+//
+  //    // remove leading underscore
+  //    name = name.replaceAll("^_*", "");
+//
+  //    // for reserved word or word starting with number, append _
+  //    if (isReservedWord(name) || name.matches("^\\d.*")) {
+  //        name = escapeReservedWord(name);
+  //    }
+//
+  //    return name;
+  //}
 
   //@Override
   //public String toParamName(String name) {

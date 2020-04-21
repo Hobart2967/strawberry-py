@@ -8,9 +8,9 @@ from typing import *
 {{#models}}
 {{#model}}
 class {{classname}}(Model):
-    def __init__(self{{#vars}}, {{name}}: {{#maptype}}{{datatype}}{{/maptype}}={{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}None{{/defaultValue}}{{/vars}}):
+    def __init__(self{{#vars}}, {{#snakecase}}{{name}}{{/snakecase}}: {{#maptype}}{{datatype}}{{/maptype}}={{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}None{{/defaultValue}}{{/vars}}):
       {{#vars}}
-      self._{{name}} = {{name}}
+      self._{{#snakecase}}{{name}}{{/snakecase}} = {{#snakecase}}{{name}}{{/snakecase}}
       {{/vars}}
 
     {{#vars}}
