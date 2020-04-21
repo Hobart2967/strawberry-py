@@ -3,7 +3,7 @@ from src.controllers.pet_api_controller import PetApiController
 
 from src.models.api_response import *
 from src.models.pet import *
-
+from src.models.tag import *
 
 @controller(PetApiController)
 class PetApiControllerImpl(PetApiController):
@@ -25,7 +25,9 @@ class PetApiControllerImpl(PetApiController):
     raise NotImplementedError
 
   def get_pet_by_id(self, pet_id: int) -> Pet:
-    return Pet(id=123)
+    return Pet(id=123,tags=[
+      Tag(id=1, name="Golden Retriever")
+    ])
 
   def update_pet(self, pet: Pet) -> None:
     super().update_pet(pet)
