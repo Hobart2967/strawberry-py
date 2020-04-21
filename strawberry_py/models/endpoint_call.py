@@ -5,12 +5,12 @@ class EndpointCall:
 
   def invoke(self, request, response):
     controller = self.endpoint.controller(request, response)
-    args = self.endpoint_arguments.route_parameters \
-      .update({
-        'self': controller
-      }) \
-      .update(self.endpoint_arguments.query_string_parameters) \
-      .update(self.endpoint_arguments.form_parameters) \
-      .update(self.endpoint_arguments.body_parameters)
+    args = {
+      **self.endpoint_arguments.route_parameters,
+      **{ 'self': controller },
+      **self.endpoint_arguments.query_string_parameters,
+      **self.endpoint_arguments.form_parameters,
+      **self.endpoint_arguments.body_parameters
+    }
     print(args)
     return self.endpoint.handler(**args)

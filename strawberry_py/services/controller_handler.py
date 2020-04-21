@@ -5,7 +5,7 @@ import json
 
 from strawberry_py.models.http_request import HttpRequest
 from strawberry_py.models.http_response import HttpResponse
-from strawberry_py.models.url_matcher import UrlMatcher
+from strawberry_py.parsers.json_serializer import JsonSerializer
 
 FUNCTION_NAME = 0
 FUNCTION_HANDLER = 1
@@ -13,13 +13,21 @@ FUNCTION_HANDLER = 1
 class ControllerHandler:
   __instance = None
 
-  def get_instance():
+  def getinstance():
     if ControllerHandler.__instance == None:
       ControllerHandler.__instance = ControllerHandler()
     return ControllerHandler.__instance
 
+  @property
+  def serializers(self):
+    return self._serializers
+
   def __init__(self):
     self.endpoints = []
+    self._serializers = {
+      'application/json': JsonSerializer
+    }
+    self.default_content_type = 'application/json'
 
   def register_controller(self, controller_class, controller_implementation_class):
 
@@ -57,7 +65,10 @@ class ControllerHandler:
     return None
 
   def handleRequest(self, http_request):
-    self.parse_body(http_request)
+    content_type = http_request.headers.get('Content-Type', self.default_content_type)
+
+    if not http_request.body is None:
+      http_request.body = self.deserialize_body(http_request, content_type)
 
     print('Searching for suitable controller...')
     endpoint_call = self.get_controller_endpoint_for_path(http_request)
@@ -70,7 +81,8 @@ class ControllerHandler:
 
     if not endpoint_call is None:
       http_response.statusCode = 200 # default, may be changed by endpoint_call
-      http_response.body = endpoint_call.invoke(http_request, http_response)
+      content_type = http_response.headers.get('Content-Type', self.default_content_type)
+      http_response.body = self.serialize_body(endpoint_call.invoke(http_request, http_response), content_type)
 
     return http_response
 
@@ -83,11 +95,20 @@ class ControllerHandler:
 
     return None
 
-  def parse_body(self, http_request):
-    if http_request.body is None:
-      return http_request.body
+  def get_serializer(self, content_type):
+    serializer = None
+    if content_type in self.serializers:
+      serializer = self.serializers[content_type]()
 
-    if 'Content-Type' not in http_request.headers or http_request.headers['Content-Type'] == 'application/json':
-      return json.loads(http_request.body)
+    if serializer is None:
+      print('Error: No serializer found for ', content_type)
 
-    return http_request.body
+    return serializer
+
+  def deserialize_body(self, payload: str, content_type: str) -> object:
+    serializer = self.get_serializer(content_type)
+    return serializer.deserialize(payload)
+
+  def serialize_body(self, payload: object, content_type: str) -> str:
+    serializer = self.get_serializer(content_type)
+    return serializer.serialize(payload)

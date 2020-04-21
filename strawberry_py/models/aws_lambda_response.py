@@ -2,6 +2,8 @@ from strawberry_py.models.http_response import HttpResponse
 import json
 
 class AwsLambdaResponse(HttpResponse):
+
+  @staticmethod
   def from_response(response):
     aws_response = AwsLambdaResponse()
     aws_response.statusCode = response.statusCode
@@ -13,5 +15,5 @@ class AwsLambdaResponse(HttpResponse):
     return {
       'statusCode': self.statusCode,
       'headers': self.headers,
-      'body': json.dumps(self.body)
+      'body': self.body
     }

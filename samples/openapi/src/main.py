@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.insert(0, os.path.join(os.getcwd(), os.path.dirname(__file__), '..', '..', '..'))
 from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse
 
 #region Controllers
@@ -14,6 +17,6 @@ def handler(event, context):
   return aws_lambda_response.get_lambda_result()
 
 def handle_http_request(http_request):
-  controller_handler = ControllerHandler.instance
+  controller_handler = ControllerHandler.getinstance()
   http_response = controller_handler.handleRequest(http_request)
   return http_response

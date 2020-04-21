@@ -13,8 +13,8 @@ class Pet(Model):
       self._tags = tags
       self._status = status
 
-    @property
     @serialize('id', int)
+    @property
     def id(self):
       return self._id
 

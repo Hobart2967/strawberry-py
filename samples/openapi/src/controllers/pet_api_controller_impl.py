@@ -25,8 +25,7 @@ class PetApiControllerImpl(PetApiController):
     raise NotImplementedError
 
   def get_pet_by_id(self, pet_id: int) -> Pet:
-    super().get_pet_by_id(pet_id)
-    raise NotImplementedError
+    return Pet(id=123)
 
   def update_pet(self, pet: Pet) -> None:
     super().update_pet(pet)
