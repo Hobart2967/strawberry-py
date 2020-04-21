@@ -25,7 +25,7 @@
 # strawberry-py one-time generations.
 # To re-generate this file or the ones listed below, comment out corresponding lines before generation
 .openapi-generator-ignore
-#**/controllers/*_api_controller_impl.py
+**/controllers/*_api_controller_impl.py
 package.json
 serverless.yml
 

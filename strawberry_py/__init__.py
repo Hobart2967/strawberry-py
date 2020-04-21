@@ -21,3 +21,5 @@ from strawberry_py.decorators.parameters.header_parameter import header_paramete
 from strawberry_py.decorators.parameters.query_string_parameter import query_string_parameter
 
 from strawberry_py.decorators.controller_decorator import controller
+
+from strawberry_py.decorators.parsing.serialize import serialize
