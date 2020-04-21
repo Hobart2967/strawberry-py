@@ -1,5 +1,6 @@
 # This is a sample model mustache template.
 from strawberry_py import Model, serialize
+from typing import *
 
 
 class InlineObject(Model):

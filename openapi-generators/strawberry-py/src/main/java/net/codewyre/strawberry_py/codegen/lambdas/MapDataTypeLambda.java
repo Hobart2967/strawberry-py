@@ -16,13 +16,13 @@ import java.io.Writer;
  * Converts text in a fragment to lowercase.
  *
  * Register:
- * 
+ *
  * <pre>
  * additionalProperties.put("lowercase", new LowercaseLambda());
  * </pre>
  *
  * Use:
- * 
+ *
  * <pre>
  * {{#lowercase}}{{httpMethod}}{{/lowercase}}
  * </pre>
@@ -50,20 +50,7 @@ public class MapDataTypeLambda implements Mustache.Lambda {
   }
 
   private String mapType(String name) {
-    HashMap<String, String> typeMap = new HashMap<>();
-    typeMap.put("String", "str");
-    typeMap.put("Long", "int");
-    typeMap.put("List", "list");
-    typeMap.put("Integer", "int");
-    typeMap.put("Boolean", "bool");
-    typeMap.put("File", "'file'");
-    typeMap.put("DateTime", "datetime");
-    typeMap.put("Date", "date");
-    typeMap.put("Map", "dict");
 
-    if (typeMap.containsKey(name)) {
-      return typeMap.get(name);
-    }
 
     return name;
   }

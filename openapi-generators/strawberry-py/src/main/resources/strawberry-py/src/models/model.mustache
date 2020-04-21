@@ -1,5 +1,6 @@
 # This is a sample model mustache template.
 from strawberry_py import Model, serialize
+from typing import *
 
 {{#imports}}from {{#snakecase}}{{import}}{{/snakecase}} import *
 {{/imports}}
@@ -14,7 +15,7 @@ class {{classname}}(Model):
 
     {{#vars}}
     @property
-    @serialize('{{name}}', {{#maptype}}{{datatype}}{{/maptype}})
+    @serialize('{{name}}', {{#maptype}}{{dataType}}{{/maptype}})
     def {{#snakecase}}{{name}}{{/snakecase}}(self):
       return self._{{#snakecase}}{{name}}{{/snakecase}}
 

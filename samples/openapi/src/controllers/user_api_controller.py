@@ -1,5 +1,6 @@
 from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter, path_parameter
 from abc import ABCMeta, abstractmethod
+from typing import *
 
 from src.models.user import *
 
@@ -12,15 +13,15 @@ class UserApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_post('/v2/user/createWithArray')
-  @body_parameter('user', type=list, required=True)
+  @body_parameter('user', type=List[User], required=True)
   @abstractmethod
-  def create_users_with_array_input(self, user: list) -> None:
+  def create_users_with_array_input(self, user: List[User]) -> None:
     return None
 
   @http_post('/v2/user/createWithList')
-  @body_parameter('user', type=list, required=True)
+  @body_parameter('user', type=List[User], required=True)
   @abstractmethod
-  def create_users_with_list_input(self, user: list) -> None:
+  def create_users_with_list_input(self, user: List[User]) -> None:
     return None
 
   @http_delete('/v2/user/{username}')

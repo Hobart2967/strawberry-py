@@ -1,4 +1,5 @@
 from strawberry_py import controller
+from typing import *
 from src.controllers.{{#snakecase}}{{classname}}{{/snakecase}} import {{classname}}
 
 {{#imports}}from {{#snakecase}}{{import}}{{/snakecase}} import *

@@ -1,5 +1,6 @@
 from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter, path_parameter
 from abc import ABCMeta, abstractmethod
+from typing import *
 
 from src.models.order import *
 
@@ -13,7 +14,7 @@ class StoreApiController(ApiController, metaclass=ABCMeta):
 
   @http_get('/v2/store/inventory')
   @abstractmethod
-  def get_inventory(self) -> dict:
+  def get_inventory(self) -> Dict[str, int]:
     return None
 
   @http_get('/v2/store/order/{orderId}')

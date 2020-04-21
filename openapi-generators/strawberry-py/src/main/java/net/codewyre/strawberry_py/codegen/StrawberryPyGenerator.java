@@ -3,8 +3,10 @@ package net.codewyre.strawberry_py.codegen;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.templating.mustache.LowercaseLambda;
+import org.openapitools.codegen.utils.ModelUtils;
 
 import io.swagger.models.properties.*;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import net.codewyre.strawberry_py.codegen.lambdas.MapDataTypeLambda;
 import net.codewyre.strawberry_py.codegen.lambdas.SnakeCaseLambda;
@@ -52,7 +54,30 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
 
   @Override
   public String getTypeDeclaration(Schema schema) {
-    return  super.getTypeDeclaration(schema);
+    if (ModelUtils.isArraySchema(schema)) {
+      ArraySchema arraySchema = (ArraySchema)schema;
+      return "List[" + this.getTypeDeclaration(arraySchema.getItems()) + "]";
+    } else if (ModelUtils.isMapSchema(schema)) {
+      Schema inner = ModelUtils.getAdditionalProperties(schema);
+      return "Dict[str, " + getTypeDeclaration(inner) + "]";
+    }
+    String result = super.getTypeDeclaration(schema);
+
+    HashMap<String, String> typeMap = new HashMap<>();
+    typeMap.put("String", "str");
+    typeMap.put("Long", "int");
+    //typeMap.put("List", "list");
+    typeMap.put("Integer", "int");
+    typeMap.put("Boolean", "bool");
+    typeMap.put("File", "'file'");
+    typeMap.put("DateTime", "datetime");
+    typeMap.put("Date", "date");
+    typeMap.put("Map", "Dict");
+
+    if (typeMap.containsKey(result)) {
+      return typeMap.get(result);
+    }
+    return result;
   }
 
   @Override
@@ -95,6 +120,12 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
 
   private static String dropDots(String str) {
     return str.replaceAll("\\.", "_");
+  }
+
+  @Override
+  public String toEnumVarName(String value, String datatype) {
+    // TODO Auto-generated method stub
+    return super.toEnumVarName(value, datatype);
   }
 
   @Override
@@ -329,7 +360,7 @@ public class StrawberryPyGenerator extends DefaultCodegen implements CodegenConf
     apiTemplateFiles.put(
         "src/controllers/controller_impl.mustache",   // the template to use
         "_impl.py");       // the extension for each file to write
-  
+
     /**
      * Template Location.  This is the location which templates will be read from.  The generator
      * will use the resource stream to attempt to read the templates.

@@ -1,5 +1,6 @@
 from strawberry_py import ApiController, http_get, http_put, http_post, http_patch, http_delete, form_parameter, body_parameter, query_string_parameter, header_parameter, path_parameter
 from abc import ABCMeta, abstractmethod
+from typing import *
 
 from src.models.api_response import *
 from src.models.pet import *
@@ -20,15 +21,15 @@ class PetApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_get('/v2/pet/findByStatus')
-  @query_string_parameter('status', type=list, required=True)
+  @query_string_parameter('status', type=List[str], required=True)
   @abstractmethod
-  def find_pets_by_status(self, status: list) -> list:
+  def find_pets_by_status(self, status: List[str]) -> List[Pet]:
     return None
 
   @http_get('/v2/pet/findByTags')
-  @query_string_parameter('tags', type=list, required=True)
+  @query_string_parameter('tags', type=List[str], required=True)
   @abstractmethod
-  def find_pets_by_tags(self, tags: list) -> list:
+  def find_pets_by_tags(self, tags: List[str]) -> List[Pet]:
     return None
 
   @http_get('/v2/pet/{petId}')
