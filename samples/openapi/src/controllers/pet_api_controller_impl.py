@@ -25,9 +25,12 @@ class PetApiControllerImpl(PetApiController):
     raise NotImplementedError
 
   def get_pet_by_id(self, pet_id: int) -> Pet:
-    return Pet(id=123,tags=[
-      Tag(id=1, name="Golden Retriever")
-    ])
+    return Pet(
+      id=pet_id,
+      tags=[
+        Tag(id=1, name="Golden Retriever"),
+        Tag(id=2, name="Golden")
+      ])
 
   def update_pet(self, pet: Pet) -> None:
     super().update_pet(pet)
