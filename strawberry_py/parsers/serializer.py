@@ -15,10 +15,7 @@ class Serializer(metaclass=ABCMeta):
 
     def get_serialization_infos(self, klass: type) -> List[SerializationInfo]:
         serialization_infos = []
-        print(klass)
         for name, member in inspect.getmembers(klass):
-            if name == "id":
-              print(getattr(getattr(getattr(klass, name), 'fget'), serialize.name))
             if not hasattr(member, 'fget') or not hasattr(getattr(member, 'fget'), serialize.name):
                 continue
             serialization_infos.append(getattr(getattr(member, 'fget'), serialize.name))

@@ -7,7 +7,7 @@ from src.models.order import *
 class StoreApiController(ApiController, metaclass=ABCMeta):
 
   @http_delete('/v2/store/order/{orderId}')
-  @path_parameter('orderId', type=str, required=True)
+  @path_parameter('orderId', data_type=str, required=True)
   @abstractmethod
   def delete_order(self, order_id: str) -> None:
     return None
@@ -18,13 +18,13 @@ class StoreApiController(ApiController, metaclass=ABCMeta):
     return None
 
   @http_get('/v2/store/order/{orderId}')
-  @path_parameter('orderId', type=int, required=True)
+  @path_parameter('orderId', data_type=int, required=True)
   @abstractmethod
   def get_order_by_id(self, order_id: int) -> Order:
     return None
 
   @http_post('/v2/store/order')
-  @body_parameter('order', type=Order, required=True)
+  @body_parameter('order', data_type=Order, required=True)
   @abstractmethod
   def place_order(self, order: Order) -> Order:
     return None

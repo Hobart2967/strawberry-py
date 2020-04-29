@@ -1,11 +1,16 @@
 import inspect
-from optparse import OptionParser
 import re
+from optparse import OptionParser
 import json
 
 from strawberry_py.models.http_request import HttpRequest
 from strawberry_py.models.http_response import HttpResponse
 from strawberry_py.parsers.json_serializer import JsonSerializer
+from strawberry_py.parsers.raw_serializer import RawSerializer
+from strawberry_py.services.content_serializer import ContentSerializerRegistry
+from strawberry_py.models.endpoint_info import EndpointInfo
+from strawberry_py.models.endpoint_call import EndpointCall
+from strawberry_py.models.api_request import ApiRequest
 
 FUNCTION_NAME = 0
 FUNCTION_HANDLER = 1
@@ -23,11 +28,11 @@ class ControllerHandler:
     return self._serializers
 
   def __init__(self):
-    self.endpoints = []
+    self.endpoints: List[EndpointInfo] = []
     self._serializers = {
-      'application/json': JsonSerializer
+      'application/json': JsonSerializer,
+      'text/plain': RawSerializer
     }
-    self.default_content_type = 'application/json'
 
   def register_controller(self, controller_class, controller_implementation_class):
 
@@ -65,28 +70,34 @@ class ControllerHandler:
     return None
 
   def handleRequest(self, http_request):
-    content_type = http_request.headers.get('Content-Type', self.default_content_type)
-
-    if not http_request.body is None:
-      http_request.body = self.deserialize_body(http_request, content_type)
-
     print('Searching for suitable controller...')
-    endpoint_call = self.get_controller_endpoint_for_path(http_request)
+    endpoint_call = self.get_endpoint_info(http_request)
 
     http_response = HttpResponse()
-    http_response.statusCode = 404
+    http_response.status_code = 404
     http_response.body = {
       'message': 'Endpoint not found.'
     }
 
-    if not endpoint_call is None:
-      http_response.statusCode = 200 # default, may be changed by endpoint_call
-      content_type = http_response.headers.get('Content-Type', self.default_content_type)
-      http_response.body = self.serialize_body(endpoint_call.invoke(http_request, http_response), content_type)
+    if endpoint_call is None:
+      return http_response
+
+    http_response.status_code = 200 # default, may be changed by endpoint_call
+
+    api_request = ApiRequest.from_http_request(http_request, endpoint_call.endpoint)
+    return_value = endpoint_call.invoke(http_request, http_response, api_request)
+
+    accept_header = http_request.headers.get('Accept', None)
+    content_type_request_header = http_request.headers.get('Content-Type', None)
+    if accept_header is None or accept_header == '*/*':
+      accept_header = content_type_request_header
+
+    content_type = http_response.headers.get('Content-Type', accept_header)
+    http_response.body = ContentSerializerRegistry.get_instance().serialize(return_value, content_type)
 
     return http_response
 
-  def get_controller_endpoint_for_path(self, http_request):
+  def get_endpoint_info(self, http_request) -> EndpointCall:
     for endpoint in self.endpoints:
       endpoint_call = endpoint.try_build_call(http_request)
 
@@ -94,21 +105,3 @@ class ControllerHandler:
         return endpoint_call
 
     return None
-
-  def get_serializer(self, content_type):
-    serializer = None
-    if content_type in self.serializers:
-      serializer = self.serializers[content_type]()
-
-    if serializer is None:
-      print('Error: No serializer found for ', content_type)
-
-    return serializer
-
-  def deserialize_body(self, payload: str, content_type: str) -> object:
-    serializer = self.get_serializer(content_type)
-    return serializer.deserialize(payload)
-
-  def serialize_body(self, payload: object, content_type: str) -> str:
-    serializer = self.get_serializer(content_type)
-    return serializer.serialize(payload)

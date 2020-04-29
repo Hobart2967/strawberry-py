@@ -10,7 +10,7 @@ class DictSerializer(Serializer):
           return source_object
 
       if isinstance(source_object, list):
-          return list(map(self.serialize, source_object))
+          return list(map(lambda item: self.serialize(item), source_object))
 
       serialization_infos = self.get_serialization_infos(type(source_object))
       target_dict = {}

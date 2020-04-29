@@ -1,6 +1,8 @@
+from typing import Callable, List
+
 from strawberry_py.models.request_matcher import RequestMatcher
 from strawberry_py.models.endpoint_call import EndpointCall
-from typing import Callable
+from strawberry_py.parameters.parameter_info import ParameterInfo
 
 class EndpointInfo:
   @property
@@ -27,6 +29,20 @@ class EndpointInfo:
   def handler(self) -> Callable:
     return self._handler
 
+  @property
+  def parameter_infos(self) -> List[ParameterInfo]:
+    handler_name = self._handler.__name__
+    definition_handler = getattr(self._controller.controller_definition, handler_name)
+    parameter_infos_collection = []
+
+    if hasattr(definition_handler, 'parameter_infos'):
+        parameter_infos_collection = parameter_infos_collection + getattr(definition_handler, 'parameter_infos')
+
+    if hasattr(self._handler, 'parameter_infos'):
+        parameter_infos_collection = parameter_infos_collection + getattr(self._handler, 'parameter_infos')
+
+    return parameter_infos_collection
+
   @handler.setter
   def handler(self, value: Callable) -> None:
     self._handler = value
@@ -45,8 +61,5 @@ class EndpointInfo:
     possible_match = self.matcher.try_get_match(request)
     if possible_match is None:
       return None
-
-#    if self.body_argument is not None:
-#      possible_match.route_parameters[self.body_argument] = request.body
 
     return EndpointCall(self, possible_match)

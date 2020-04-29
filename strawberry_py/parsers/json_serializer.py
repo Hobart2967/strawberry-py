@@ -1,11 +1,11 @@
 from .dict_serializer import DictSerializer
+from .serializer import Serializer
 import json
 
-class JsonSerializer(DictSerializer):
+class JsonSerializer(Serializer):
     def serialize(self, value: object) -> str:
         dict_serializer = DictSerializer()
         serialized_json_dict = dict_serializer.serialize(value)
-        print(serialized_json_dict)
         return json.dumps(serialized_json_dict)
 
     def deserialize(self, value: str, target_class: type) -> object:

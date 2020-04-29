@@ -1,4 +1,5 @@
-from strawberry_py import controller
+from strawberry_py import controller, header_parameter
+
 from src.controllers.pet_api_controller import PetApiController
 
 from src.models.api_response import *
@@ -24,13 +25,15 @@ class PetApiControllerImpl(PetApiController):
     super().find_pets_by_tags(tags)
     raise NotImplementedError
 
-  def get_pet_by_id(self, pet_id: int) -> Pet:
+  @header_parameter('apiKey', data_type=str, required=True, minimum_length=1, maximum_length=2, pattern='[0-9]+')
+  def get_pet_by_id(self, pet_id: int, api_key: str) -> Pet:
     return Pet(
       id=pet_id,
       tags=[
         Tag(id=1, name="Golden Retriever"),
         Tag(id=2, name="Golden")
-      ])
+      ],
+      status=api_key)
 
   def update_pet(self, pet: Pet) -> None:
     super().update_pet(pet)
