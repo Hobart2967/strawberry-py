@@ -11,6 +11,7 @@ from strawberry_py.services.content_serializer import ContentSerializerRegistry
 from strawberry_py.models.endpoint_info import EndpointInfo
 from strawberry_py.models.endpoint_call import EndpointCall
 from strawberry_py.models.api_request import ApiRequest
+from strawberry_py.util.log import Log
 
 FUNCTION_NAME = 0
 FUNCTION_HANDLER = 1
@@ -69,8 +70,9 @@ class ControllerHandler:
 
     return None
 
-  def handleRequest(self, http_request):
-    print('Searching for suitable controller...')
+  def handleRequest(self, http_request: HttpRequest):
+    Log.debug(http_request.http_method, http_request.path, http_request.user_agent)
+    Log.debug('Searching for controller endpoint')
     endpoint_call = self.get_endpoint_info(http_request)
 
     http_response = HttpResponse()
@@ -80,6 +82,7 @@ class ControllerHandler:
     }
 
     if endpoint_call is None:
+      Log.debug(http_request.http_method, http_request.path, http_request.user_agent, '===> 404')
       return http_response
 
     http_response.status_code = 200 # default, may be changed by endpoint_call
@@ -94,7 +97,6 @@ class ControllerHandler:
 
     content_type = http_response.headers.get('Content-Type', accept_header)
     http_response.body = ContentSerializerRegistry.get_instance().serialize(return_value, content_type)
-
     return http_response
 
   def get_endpoint_info(self, http_request) -> EndpointCall:
