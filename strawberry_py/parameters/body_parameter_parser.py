@@ -19,7 +19,7 @@ class BodyParameterParser(ParameterParser):
     return list(map(lambda item: self.get_value_from(http_request, item), body_parameter_infos))
 
   def get_value_from(self, http_request, parameter_info):
-    mine_type = http_request.headers.get('Content-Type', None)
-    value = self.content_serializer.deserialize(http_request.body, mine_type, parameter_info.data_type)
+    mime_type = http_request.headers.get('Content-Type', None)
+    value = self.content_serializer.deserialize(http_request.body, mime_type, parameter_info.data_type)
 
-    return ParameterValue(parameter_info.name, parameter_info.data_type, parameter_info.location, value)
+    return ParameterValue(parameter_info, value, mime_type != "text/plain")

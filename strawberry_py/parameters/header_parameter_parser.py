@@ -25,5 +25,4 @@ class HeaderParameterParser(ParameterParser):
       return ParameterValue(parameter_info, None)
 
     raw_parameter_value = http_request.headers.get(parameter_info.name, None)
-    parsed_parameter_value = parameter_info.data_type(raw_parameter_value)
-    return ParameterValue(parameter_info, parsed_parameter_value)
+    return ParameterValue(parameter_info, raw_parameter_value)

@@ -7,6 +7,7 @@ from strawberry_py.parameters.path_parameter_parser import PathParameterParser
 from strawberry_py.parameters.body_parameter_parser import BodyParameterParser
 from strawberry_py.parameters.form_parameter_parser import FormParameterParser
 from strawberry_py.parameters.header_parameter_parser import HeaderParameterParser
+from strawberry_py.parameters.query_string_parameter_parser import QueryStringParameterParser
 from strawberry_py.parameters.parameter_value import ParameterValue
 from strawberry_py.util.log import Log
 
@@ -23,6 +24,7 @@ class ApiRequest:
       FormParameterParser().get_parameters(http_request, endpoint_info.parameter_infos),
       BodyParameterParser().get_parameters(http_request, endpoint_info.parameter_infos),
       HeaderParameterParser().get_parameters(http_request, endpoint_info.parameter_infos),
+      QueryStringParameterParser().get_parameters(http_request, endpoint_info.parameter_infos),
     ]
     all_parameters = list(itertools.chain(*all_parameters))
     return ApiRequest(all_parameters)

@@ -1,4 +1,4 @@
-from strawberry_py import controller, header_parameter
+from strawberry_py import controller, header_parameter, query_string_parameter
 
 from src.controllers.pet_api_controller import PetApiController
 
@@ -21,12 +21,14 @@ class PetApiControllerImpl(PetApiController):
     super().find_pets_by_status(status)
     raise NotImplementedError
 
-  def find_pets_by_tags(self, tags: list) -> list:
+  def find_pets_by_tags(self, tags: str) -> list:
     super().find_pets_by_tags(tags)
     raise NotImplementedError
 
   @header_parameter('apiKey', data_type=str, required=True, minimum_length=1, maximum_length=2, pattern='[0-9]+')
-  def get_pet_by_id(self, pet_id: int, api_key: str) -> Pet:
+  @query_string_parameter('TestKey', data_type=List[int])
+  def get_pet_by_id(self, pet_id: int, api_key: str, test_key: List[str]) -> Pet:
+    print(test_key)
     return Pet(
       id=pet_id,
       tags=[

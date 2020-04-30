@@ -31,8 +31,7 @@ class PathParameterParser(ParameterParser):
 
     values = self.get_path_parameter_values(http_request)
     raw_parameter_value = values[python_property_name]
-    parsed_parameter_value = parameter_info.data_type(raw_parameter_value)
-    return ParameterValue(parameter_info, parsed_parameter_value)
+    return ParameterValue(parameter_info, raw_parameter_value)
 
   def load_path_parameter_names(self) -> List[object]:
     path_parameter_names = []
