@@ -33,6 +33,7 @@ class EndpointCall:
     validation_errors = api_request.validate()
     if len(validation_errors) > 0:
       response.status_code = 400
+      Log.info('Request was not validated successfully. Returning validation errors')
       return ValidationErrorResponse(validation_errors)
 
     Log.debug('Calling', self.endpoint.handler.__name__, 'on', self.endpoint.controller.__name__, 'with arguments', args)
