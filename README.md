@@ -6,6 +6,8 @@ Aim is to avoid boilerplate WSGI layers when deploying python lambdas with multi
 Frameworks like python-flask, connexion and others require developers to add an annoying wsgi layer on top of their api.
 This casues the package to get bigger and bigger while also increasing the cold start times and runtime duration of a lambda.
 
+![Idea of this frameowrk](docs/idea-background.png "How strawberry_py integrates into your application")
+
 ## Support
 - LightWeight, no dependencies
 - Easy to use for people knowing .NET Core Rest Apis, Java Springboot Applications and similar
