@@ -15,38 +15,47 @@ This casues the package to get bigger and bigger while also increasing the cold 
 - Supports AWS Lambda
 - Should support other Lambda function providers with small adjustments.
 - Comes with an OpenApi Generator for easing documentation of REST APIs ✨
+- Supports automated parsing of application/json body in request and responses
 
 # Setting up the main lambda python file
-```
-from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse
+```python
+from strawberry_py import ControllerHandler, AwsLambdaRequest, AwsLambdaResponse, HttpRequest, HttpResponse
 
 #region Controllers
-from .controllers.hello_world_controller import HelloWorldController
+from my_api.controllers.hello_world_controller import HelloWorldController
 #endregion
 
-def handler(event, context):
-  request = AwsLambdaRequest(event, context)
-  controller_handler = ControllerHandler.getinstance()
-  response = controller_handler.handleRequest(request)
+# AWS Handler, configured in Lambda
+def handler(event, context) -> object:
+  http_request = AwsLambdaRequest(event, context)
+  http_response = handle_http_request(http_request)
 
-  return AwsLambdaResponse.from_response(response).get_lambda_result()
+  aws_lambda_response = AwsLambdaResponse.from_response(http_response)
+  return aws_lambda_response.get_lambda_result()
+
+# Generic Handler, called by aws or google handler
+def handle_http_request(http_request: HttpRequest) -> HttpResponse:
+  controller_handler = ControllerHandler.getinstance()
+  http_response = controller_handler.handleRequest(http_request)
+  return http_response
+
  ```
 
 # Creating a controller
-```
-from strawberry_py import controller, http_get, http_post, ControllerBase
+```python
+from strawberry_py import controller, http_get, http_post, ControllerBase, path_parameter, query_string_parameter, body_parameter
 
-@controller(HelloWorldController)
+@controller(HelloWorldController) # Tells ControllerHandler that this is a controller
 class HelloWorldController(ControllerBase):
 
   def test_method(self):
     return
 
-  @http_get('/hello/world/{firstName}/{lastName}')
-  @path_parameter('firstName')
-  @path_parameter('lastName')
+  @http_get('/hello/world/{firstName}/{lastName}') # Defines a routes
+  @path_parameter('firstName', data_type=str, required=True) # Defines path parameter information
+  @path_parameter('lastName', data_type=str, minimum_length=1)
   @query_string_parameter('greetInformal')
-  def get_hello_world(self, first_name, last_name, greet_informal=False):
+  def get_hello_world(self, first_name, last_name=None, greet_informal=False):
     greeting = 'Hello '
     if greet_informal:
       greeting = 'Yo, '
