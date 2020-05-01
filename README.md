@@ -16,6 +16,12 @@ This casues the package to get bigger and bigger while also increasing the cold 
 - Should support other Lambda function providers with small adjustments.
 - Comes with an OpenApi Generator for easing documentation of REST APIs ✨
 - Supports automated parsing of application/json body in request and responses
+- CamelCase parameter definitions are automatically converted to snake_cased names in python contexts. Just to meet the coding guidelines ❤
+  ```python
+  @query_string_parameter('myCamelCaseParam')
+  def controller_method(self, my_camel_case_param):
+    pass
+  ```
 
 # Setting up the main lambda python file
 ```python
