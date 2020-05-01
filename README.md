@@ -7,6 +7,8 @@ Frameworks like python-flask, connexion and others require developers to add an 
 This casues the package to get bigger and bigger while also increasing the cold start times and runtime duration of a lambda.
 
 ## Support
+- LightWeight, no dependencies
+- Easy to use for people knowing .NET Core Rest Apis, Java Springboot Applications and similar
 - Supports Python 3.7 and higher
 - Supports AWS Lambda
 - Should support other Lambda function providers with small adjustments.
