@@ -9,7 +9,7 @@ This casues the package to get bigger and bigger while also increasing the cold 
 ![Idea of this frameowrk](docs/idea-background-transparent.png "How strawberry_py integrates into your application")
 
 ## Support
-- LightWeight, no dependencies
+- LightWeight, no non-builtin dependencies < 500KB
 - Easy to use for people knowing .NET Core Rest Apis, Java Springboot Applications and similar
 - Supports Python 3.7 and higher
 - Supports AWS Lambda
@@ -29,7 +29,7 @@ This casues the package to get bigger and bigger while also increasing the cold 
       # Implementation here...
       pass
   ```
-  
+
 - CamelCase parameter definitions are automatically converted to snake_cased names in python contexts. Just to meet the coding guidelines ❤
   ```python
   @query_string_parameter('myCamelCaseParam')
