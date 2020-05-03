@@ -20,7 +20,7 @@ class DictSerializer(Serializer):
 
       return target_dict
 
-  def deserialize(self, source_dict: dict, target_class: type) -> object:
+  def deserialize(self, source_dict: dict, target_class: type, mime_type: str) -> object:
       target_obj = target_class()
       serialization_infos = self.get_serialization_infos(target_class)
       for info in serialization_infos:

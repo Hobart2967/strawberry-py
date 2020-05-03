@@ -6,5 +6,5 @@ class RawSerializer(Serializer):
     def serialize(self, value: object) -> str:
         return value
 
-    def deserialize(self, value: str, target_class: type) -> object:
+    def deserialize(self, value: str, target_class: type, mime_type: str) -> object:
         return value

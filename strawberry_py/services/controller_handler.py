@@ -2,6 +2,7 @@ import inspect
 import re
 from optparse import OptionParser
 import json
+import traceback
 
 from strawberry_py.models.http_request import HttpRequest
 from strawberry_py.models.http_response import HttpResponse
@@ -102,7 +103,7 @@ class ControllerHandler:
     except Exception as err:
       http_response.status_code = 500
       http_response.body = ContentSerializerRegistry.get_instance().serialize(ServerError(str(err)), 'application/json')
-
+      traceback.print_exc()
     return http_response
 
   def get_endpoint_info(self, http_request) -> EndpointCall:

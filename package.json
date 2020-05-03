@@ -11,5 +11,8 @@
     "build-openapi-sample": "cd openapi-generators/strawberry-py && mvn test",
     "start-sample": "cd samples/non-openapi && yarn serverless offline",
     "start-openapi-sample": "cd samples/openapi && yarn serverless offline"
+  },
+  "devDependencies": {
+    "serverless-apigw-binary": "^0.4.4"
   }
 }

@@ -11,6 +11,7 @@ from src.controllers.user_api_controller_impl import UserApiControllerImpl
 #endregion
 
 def handler(event, context):
+  print(event)
   http_request = AwsLambdaRequest(event, context)
   http_response = handle_http_request(http_request)
 

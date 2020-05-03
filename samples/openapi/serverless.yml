@@ -6,11 +6,17 @@ plugins:
 - serverless-offline-python
 - serverless-python-requirements
 - serverless-offline
+- serverless-apigw-binary
 custom:
   serverless-offline:
     resourceRoutes: true
   pythonRequirements:
     dockerizePip: non-linux
+  custom:
+    apigwBinary:
+      types:           #list of mime-types
+        - 'image/png'
+        - 'text/html'
 functions:
   app:
     handler: src.main.handler
