@@ -10,7 +10,7 @@ class Serializer(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def deserialize(self, value: str, target_class: type) -> object:
+    def deserialize(self, value: str, target_class: type, mime_type: str) -> object:
         pass
 
     def get_serialization_infos(self, klass: type) -> List[SerializationInfo]:

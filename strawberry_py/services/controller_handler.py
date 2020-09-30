@@ -2,6 +2,7 @@ import inspect
 import re
 from optparse import OptionParser
 import json
+import traceback
 
 from strawberry_py.models.http_request import HttpRequest
 from strawberry_py.models.http_response import HttpResponse
@@ -12,6 +13,7 @@ from strawberry_py.models.endpoint_info import EndpointInfo
 from strawberry_py.models.endpoint_call import EndpointCall
 from strawberry_py.models.api_request import ApiRequest
 from strawberry_py.util.log import Log
+from strawberry_py.errors.server_error import ServerError
 
 FUNCTION_NAME = 0
 FUNCTION_HANDLER = 1
@@ -71,7 +73,7 @@ class ControllerHandler:
     return None
 
   def handleRequest(self, http_request: HttpRequest):
-    Log.debug(http_request.http_method, http_request.path, http_request.user_agent)
+    Log.info(http_request.http_method, http_request.path, http_request.user_agent)
     Log.debug('Searching for controller endpoint')
     endpoint_call = self.get_endpoint_info(http_request)
 
@@ -82,21 +84,26 @@ class ControllerHandler:
     }
 
     if endpoint_call is None:
-      Log.debug(http_request.http_method, http_request.path, http_request.user_agent, '===> 404')
+      Log.info(http_request.http_method, http_request.path, http_request.user_agent, '===> 404')
       return http_response
 
     http_response.status_code = 200 # default, may be changed by endpoint_call
 
     api_request = ApiRequest.from_http_request(http_request, endpoint_call.endpoint)
-    return_value = endpoint_call.invoke(http_request, http_response, api_request)
+    try:
+      return_value = endpoint_call.invoke(http_request, http_response, api_request)
 
-    accept_header = http_request.headers.get('Accept', None)
-    content_type_request_header = http_request.headers.get('Content-Type', None)
-    if accept_header is None or accept_header == '*/*':
-      accept_header = content_type_request_header
+      accept_header = http_request.headers.get('Accept', None)
+      content_type_request_header = http_request.headers.get('Content-Type', None)
+      if accept_header is None or accept_header == '*/*':
+        accept_header = content_type_request_header
 
-    content_type = http_response.headers.get('Content-Type', accept_header)
-    http_response.body = ContentSerializerRegistry.get_instance().serialize(return_value, content_type)
+      content_type = http_response.headers.get('Content-Type', accept_header)
+      http_response.body = ContentSerializerRegistry.get_instance().serialize(return_value, content_type)
+    except Exception as err:
+      http_response.status_code = 500
+      http_response.body = ContentSerializerRegistry.get_instance().serialize(ServerError(str(err)), 'application/json')
+      traceback.print_exc()
     return http_response
 
   def get_endpoint_info(self, http_request) -> EndpointCall:

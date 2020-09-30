@@ -27,6 +27,9 @@ class ParameterValue:
     self._parameter_value = value
 
   def parse_value(self, value, data_type):
+    if value is None:
+      return value
+
     target_type = data_type
 
     if hasattr(data_type, '__origin__'):

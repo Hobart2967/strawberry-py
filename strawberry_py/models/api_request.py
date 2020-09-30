@@ -43,23 +43,29 @@ class ApiRequest:
     missing_required_parameters = list(filter(lambda parameter: parameter.parameter_value is None and parameter.info.required == True, self.parameters))
     if len(missing_required_parameters) > 0:
       missing_required_parameter_names = list(map(lambda parameter: 'Missing required parameter ' + parameter.info.name, missing_required_parameters))
-      Log.debug(missing_required_parameter_names)
+      Log.debug('ValidationError:', missing_required_parameter_names)
       validation_messages = itertools.chain(validation_messages, missing_required_parameter_names)
 
     too_short_values = list(filter(lambda parameter: type(parameter.parameter_value) is str \
                                                      and parameter.info.minimum_length is not None \
-                                                    and len(parameter.parameter_value) < parameter.info.minimum_length, self.parameters))
+                                                     and (parameter.parameter_value is None
+                                                          or len(parameter.parameter_value) < parameter.info.minimum_length), self.parameters))
     if len(too_short_values) > 0:
-      too_short_value_names = list(map(lambda parameter: 'Parameter ' + parameter.info.name + ' is not exceeding minimum length', too_short_values))
-      Log.debug(too_short_value_names)
+      too_short_value_names = list(map(
+        lambda parameter: 'Parameter ' + parameter.info.name + ' is not exceeding minimum length with value "' + parameter.parameter_value + '"',
+        too_short_values))
+      Log.debug('ValidationError:', too_short_value_names)
       validation_messages = itertools.chain(validation_messages, too_short_value_names)
 
     too_long_values = list(filter(lambda parameter: type(parameter.parameter_value) is str \
                                                     and parameter.info.maximum_length is not None \
+                                                    and parameter.parameter_value is not None \
                                                     and len(parameter.parameter_value) > parameter.info.maximum_length , self.parameters))
     if len(too_long_values) > 0:
-      too_long_values = list(map(lambda parameter: 'Parameter ' + parameter.info.name + ' is exceeding maximum length', too_long_values))
-      Log.debug(too_long_values)
+      too_long_values = list(map(
+        lambda parameter: 'Parameter ' + parameter.info.name + ' is exceeding maximum length with value "' + parameter.parameter_value + '"',
+        too_long_values))
+      Log.debug('ValidationError:', too_long_values)
       validation_messages = itertools.chain(validation_messages, too_long_values)
 
 
@@ -69,7 +75,7 @@ class ApiRequest:
                                                             '\' for parameter ' + parameter.info.name + \
                                                             ' is not matching pattern \'' + \
                                                             parameter.info.pattern + '\'', not_matching_values))
-      Log.debug(not_matching_value_names)
+      Log.debug('ValidationError:', not_matching_value_names)
       validation_messages = itertools.chain(validation_messages, not_matching_value_names)
 
     return list(validation_messages)
